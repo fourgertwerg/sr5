@@ -1,0 +1,19 @@
+name: Slack Notification on Pull Request Merge
+on:
+  pull_request:
+    types:
+      - closed
+      - reopened
+      - merged
+jobs:
+  send-slack-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+      - name: Send Slack Message
+        uses: slackapi/slack-github-action@v2
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          channel: '#your-slack-channel'
+          text: "🎉 Pull request *{{ github.event.pull_request.html_url }}* has been merged!"
